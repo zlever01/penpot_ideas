@@ -1,0 +1,299 @@
+{
+  "Global": {
+    "radius": {
+      "card": { "$value": 14, "$type": "borderRadius", "$description": "Cards, primary content containers" },
+      "button": { "$value": 10, "$type": "borderRadius", "$description": "Buttons, slightly tighter than cards" },
+      "input": { "$value": 9, "$type": "borderRadius", "$description": "Inputs, dropdowns, nav items" },
+      "pill": { "$value": 20, "$type": "borderRadius", "$description": "Badges, pills, time period selectors — full pill shape" },
+      "swatch": { "$value": 8, "$type": "borderRadius", "$description": "Small decorative elements, icon containers" }
+    },
+    "spacing": {
+      "2xs": { "$value": 2, "$type": "spacing", "$description": "Inline gaps — badge padding, icon margins" },
+      "xs": { "$value": 4, "$type": "spacing", "$description": "Tight grouping — chip sets, stat change row" },
+      "sm": { "$value": 6, "$type": "spacing", "$description": "Button gaps, element spacing" },
+      "md": { "$value": 8, "$type": "spacing", "$description": "Card grid gaps, section spacing" },
+      "lg": { "$value": 12, "$type": "spacing", "$description": "Card internal padding, sidebar sections" },
+      "xl": { "$value": 14, "$type": "spacing", "$description": "Card padding (sides)" },
+      "2xl": { "$value": 16, "$type": "spacing", "$description": "Card padding (vertical), main regions" },
+      "3xl": { "$value": 20, "$type": "spacing", "$description": "Page gutter, section separation" },
+      "4xl": { "$value": 24, "$type": "spacing", "$description": "Main content padding" }
+    },
+    "sizing": {
+      "sidebar-width": { "$value": 240, "$type": "sizing", "$description": "Sidebar fixed width" },
+      "avatar": { "$value": 32, "$type": "sizing", "$description": "User avatar in sidebar profile" },
+      "icon-sm": { "$value": 13, "$type": "sizing", "$description": "Small inline icons — button icons, status indicators" },
+      "icon-md": { "$value": 16, "$type": "sizing", "$description": "Standard icons — navigation, toolbar" },
+      "slider-track": { "$value": 5, "$type": "sizing", "$description": "Slider and progress bar track height" },
+      "slider-thumb": { "$value": 14, "$type": "sizing", "$description": "Slider thumb diameter" },
+      "nav-accent-bar": { "$value": 3, "$type": "sizing", "$description": "Active nav item left accent bar width" },
+      "dot-indicator": { "$value": 6, "$type": "sizing", "$description": "Activity feed dot indicators" },
+      "pulse-dot": { "$value": 8, "$type": "sizing", "$description": "Animated live status pulse dot" }
+    },
+    "strokeWidth": {
+      "border": { "$value": 1, "$type": "strokeWidth", "$description": "Standard border width" },
+      "table-hover": { "$value": 2, "$type": "strokeWidth", "$description": "Table row hover left-border accent" },
+      "nav-accent": { "$value": 3, "$type": "strokeWidth", "$description": "Active navigation left accent bar" },
+      "slider-thumb-ring": { "$value": 2.5, "$type": "strokeWidth", "$description": "Slider thumb border ring" }
+    },
+    "opacity": {
+      "noise-dark": { "$value": "2.5%", "$type": "opacity", "$description": "Noise texture overlay — dark mode" },
+      "noise-light": { "$value": "1.5%", "$type": "opacity", "$description": "Noise texture overlay — light mode" },
+      "disabled": { "$value": "45%", "$type": "opacity", "$description": "Disabled state for interactive elements" }
+    },
+    "fontFamily": {
+      "display": { "$value": "DM Sans, system-ui, sans-serif", "$type": "fontFamily", "$description": "Primary UI font — headings, labels, body, buttons, navigation" },
+      "mono": { "$value": "JetBrains Mono, monospace", "$type": "fontFamily", "$description": "Data font — stat values, timestamps, section headers, badges, code" }
+    },
+    "fontSize": {
+      "stat-value": { "$value": 22, "$type": "fontSize", "$description": "Large stat card numbers" },
+      "page-title": { "$value": 20, "$type": "fontSize", "$description": "Main page heading" },
+      "card-title": { "$value": 13, "$type": "fontSize", "$description": "Card section headings" },
+      "nav-item": { "$value": 12.5, "$type": "fontSize", "$description": "Sidebar navigation items" },
+      "button-md": { "$value": 12, "$type": "fontSize", "$description": "Default button text" },
+      "button-sm": { "$value": 11, "$type": "fontSize", "$description": "Small button text" },
+      "button-lg": { "$value": 13, "$type": "fontSize", "$description": "Large button text" },
+      "body": { "$value": 11, "$type": "fontSize", "$description": "Body text, descriptions" },
+      "label": { "$value": 10, "$type": "fontSize", "$description": "Dropdown labels, stat labels, meta text" },
+      "section-header": { "$value": 9, "$type": "fontSize", "$description": "Sidebar section headers — uppercase monospace" },
+      "badge": { "$value": 9, "$type": "fontSize", "$description": "Badge and pill text" },
+      "caption": { "$value": 9, "$type": "fontSize", "$description": "Chart axis labels, timestamps" }
+    },
+    "fontWeight": {
+      "black": { "$value": 800, "$type": "fontWeight", "$description": "Page titles, stat values, logo" },
+      "bold": { "$value": 700, "$type": "fontWeight", "$description": "Card titles, section headers, badges" },
+      "semibold": { "$value": 600, "$type": "fontWeight", "$description": "Buttons, active nav, emphasis" },
+      "medium": { "$value": 500, "$type": "fontWeight", "$description": "Labels, chart legends" },
+      "regular": { "$value": 450, "$type": "fontWeight", "$description": "Inactive nav items, table body" },
+      "normal": { "$value": 400, "$type": "fontWeight", "$description": "Body text, dropdown options" }
+    },
+    "letterSpacing": {
+      "tight": { "$value": -0.5, "$type": "letterSpacing", "$description": "Page titles, stat values" },
+      "normal": { "$value": 0, "$type": "letterSpacing", "$description": "Body text, buttons, nav" },
+      "wide": { "$value": 0.5, "$type": "letterSpacing", "$description": "Uppercase labels" },
+      "wider": { "$value": 1, "$type": "letterSpacing", "$description": "Section headers — FILTERS, MODEL PARAMETERS" }
+    },
+    "typography": {
+      "stat-value": {
+        "$value": { "fontFamily": "{fontFamily.mono}", "fontSize": "{fontSize.stat-value}", "fontWeight": "{fontWeight.black}", "letterSpacing": "{letterSpacing.tight}", "lineHeight": 1 },
+        "$type": "typography", "$description": "Large metric numbers — $48.2K, 2,847, 32.4%"
+      },
+      "page-title": {
+        "$value": { "fontFamily": "{fontFamily.display}", "fontSize": "{fontSize.page-title}", "fontWeight": "{fontWeight.black}", "letterSpacing": "{letterSpacing.tight}", "lineHeight": 1.2 },
+        "$type": "typography", "$description": "Main page heading"
+      },
+      "card-title": {
+        "$value": { "fontFamily": "{fontFamily.display}", "fontSize": "{fontSize.card-title}", "fontWeight": "{fontWeight.bold}", "letterSpacing": "{letterSpacing.normal}", "lineHeight": 1.3 },
+        "$type": "typography", "$description": "Card section headings"
+      },
+      "button": {
+        "$value": { "fontFamily": "{fontFamily.display}", "fontSize": "{fontSize.button-md}", "fontWeight": "{fontWeight.semibold}", "letterSpacing": "{letterSpacing.normal}", "lineHeight": 1 },
+        "$type": "typography", "$description": "Default button label"
+      },
+      "body": {
+        "$value": { "fontFamily": "{fontFamily.display}", "fontSize": "{fontSize.body}", "fontWeight": "{fontWeight.medium}", "letterSpacing": "{letterSpacing.normal}", "lineHeight": 1.6 },
+        "$type": "typography", "$description": "Body text, descriptions"
+      },
+      "section-header": {
+        "$value": { "fontFamily": "{fontFamily.mono}", "fontSize": "{fontSize.section-header}", "fontWeight": "{fontWeight.bold}", "letterSpacing": "{letterSpacing.wider}", "lineHeight": 1.3, "textCase": "uppercase" },
+        "$type": "typography", "$description": "Sidebar section headers — FILTERS, MODEL PARAMETERS"
+      },
+      "badge": {
+        "$value": { "fontFamily": "{fontFamily.mono}", "fontSize": "{fontSize.badge}", "fontWeight": "{fontWeight.bold}", "letterSpacing": "{letterSpacing.normal}", "lineHeight": 1.2 },
+        "$type": "typography", "$description": "Badge and pill text"
+      }
+    }
+  },
+  "Mode/Dark": {
+    "color": {
+      "surface": {
+        "background": { "$value": "#07080A", "$type": "color", "$description": "Page background" },
+        "sidebar": { "$value": "#0B0D10", "$type": "color", "$description": "Sidebar background" },
+        "card": { "$value": "#12151A", "$type": "color", "$description": "Card background" },
+        "dropdown": { "$value": "#14171C", "$type": "color", "$description": "Dropdown/popover background" },
+        "shimmer": { "$value": "rgba(255, 255, 255, 0.03)", "$type": "color", "$description": "Subtle interactive surface tint" },
+        "input": { "$value": "rgba(255, 255, 255, 0.04)", "$type": "color", "$description": "Input field background" }
+      },
+      "border": {
+        "default": { "$value": "rgba(255, 255, 255, 0.06)", "$type": "color", "$description": "Standard borders" },
+        "hover": { "$value": "rgba(255, 255, 255, 0.10)", "$type": "color", "$description": "Hovered border" },
+        "sidebar": { "$value": "rgba(255, 255, 255, 0.05)", "$type": "color", "$description": "Sidebar border" },
+        "input": { "$value": "rgba(255, 255, 255, 0.07)", "$type": "color", "$description": "Input border" },
+        "focus": { "$value": "rgba(14, 205, 164, 0.4)", "$type": "color", "$description": "Focused input border" },
+        "focus-ring": { "$value": "rgba(14, 205, 164, 0.08)", "$type": "color", "$description": "Outer focus ring" },
+        "divider": { "$value": "rgba(255, 255, 255, 0.04)", "$type": "color", "$description": "Dashed divider lines" }
+      },
+      "text": {
+        "primary": { "$value": "#F4F4F5", "$type": "color", "$description": "Primary text" },
+        "secondary": { "$value": "#8B8D98", "$type": "color", "$description": "Secondary text" },
+        "muted": { "$value": "#45474F", "$type": "color", "$description": "Muted text — labels, captions" }
+      },
+      "accent": {
+        "default": { "$value": "#0ECDA4", "$type": "color", "$description": "Primary accent — brighter in dark mode" },
+        "hover": { "$value": "#3DDFBB", "$type": "color", "$description": "Accent hover" },
+        "foreground": { "$value": "#021F18", "$type": "color", "$description": "Text on accent backgrounds" },
+        "muted": { "$value": "rgba(14, 205, 164, 0.10)", "$type": "color", "$description": "Accent tint" },
+        "glow": { "$value": "rgba(14, 205, 164, 0.05)", "$type": "color", "$description": "Ambient radial glow" }
+      },
+      "accent-secondary": {
+        "default": { "$value": "#8B5CF6", "$type": "color", "$description": "Secondary accent — violet" },
+        "muted": { "$value": "rgba(139, 92, 246, 0.10)", "$type": "color", "$description": "Secondary accent tint" }
+      },
+      "semantic": {
+        "danger": { "$value": "#F06060", "$type": "color", "$description": "Error, destructive, negative" },
+        "danger-muted": { "$value": "rgba(240, 96, 96, 0.08)", "$type": "color", "$description": "Danger tint" },
+        "warning": { "$value": "#F5B731", "$type": "color", "$description": "Warning, alerts" },
+        "warning-muted": { "$value": "rgba(245, 183, 49, 0.08)", "$type": "color", "$description": "Warning tint" }
+      },
+      "interactive": {
+        "nav-active": { "$value": "rgba(14, 205, 164, 0.10)", "$type": "color", "$description": "Active nav bg" },
+        "nav-hover": { "$value": "rgba(255, 255, 255, 0.04)", "$type": "color", "$description": "Hovered nav bg" },
+        "dropdown-hover": { "$value": "rgba(255, 255, 255, 0.05)", "$type": "color", "$description": "Hovered dropdown option" },
+        "row-hover": { "$value": "rgba(255, 255, 255, 0.02)", "$type": "color", "$description": "Table row hover" },
+        "badge": { "$value": "rgba(14, 205, 164, 0.12)", "$type": "color", "$description": "Badge background" },
+        "avatar-ring": { "$value": "rgba(14, 205, 164, 0.3)", "$type": "color", "$description": "Avatar outer ring" },
+        "slider-track": { "$value": "rgba(255, 255, 255, 0.08)", "$type": "color", "$description": "Slider track" },
+        "slider-thumb": { "$value": "#0ECDA4", "$type": "color", "$description": "Slider thumb" },
+        "slider-thumb-border": { "$value": "#12151A", "$type": "color", "$description": "Slider thumb border" }
+      },
+      "chart": {
+        "series-1": { "$value": "#0ECDA4", "$type": "color", "$description": "Revenue" },
+        "series-2": { "$value": "#8B5CF6", "$type": "color", "$description": "Forecast, Users" },
+        "series-3": { "$value": "#F5B731", "$type": "color", "$description": "Pipeline" },
+        "series-4": { "$value": "#F06060", "$type": "color", "$description": "Bounce, Danger" },
+        "series-5": { "$value": "#3B82F6", "$type": "color", "$description": "Info" },
+        "series-6": { "$value": "#06B6D4", "$type": "color", "$description": "Additional" }
+      }
+    },
+    "shadow": {
+      "card": {
+        "$value": [
+          { "color": "rgba(0, 0, 0, 0.4)", "offsetX": 0, "offsetY": 1, "blur": 3, "spread": 0, "type": "dropShadow" },
+          { "color": "rgba(0, 0, 0, 0.25)", "offsetX": 0, "offsetY": 8, "blur": 24, "spread": 0, "type": "dropShadow" },
+          { "color": "rgba(255, 255, 255, 0.03)", "offsetX": 0, "offsetY": 1, "blur": 0, "spread": 0, "type": "innerShadow" }
+        ],
+        "$type": "shadow", "$description": "Card elevation with inset top-edge highlight"
+      },
+      "button": {
+        "$value": [
+          { "color": "rgba(14, 205, 164, 0.15)", "offsetX": 0, "offsetY": 1, "blur": 3, "spread": 0, "type": "dropShadow" }
+        ],
+        "$type": "shadow", "$description": "Primary button accent-tinted shadow"
+      },
+      "dropdown": {
+        "$value": [
+          { "color": "rgba(0, 0, 0, 0.5)", "offsetX": 0, "offsetY": 8, "blur": 30, "spread": 0, "type": "dropShadow" },
+          { "color": "rgba(255, 255, 255, 0.06)", "offsetX": 0, "offsetY": 0, "blur": 0, "spread": 1, "type": "dropShadow" }
+        ],
+        "$type": "shadow", "$description": "Dropdown/popover elevation"
+      }
+    }
+  },
+  "Mode/Light": {
+    "color": {
+      "surface": {
+        "background": { "$value": "#F6F7F9", "$type": "color", "$description": "Page background" },
+        "sidebar": { "$value": "#FFFFFF", "$type": "color", "$description": "Sidebar background" },
+        "card": { "$value": "#FFFFFF", "$type": "color", "$description": "Card background" },
+        "dropdown": { "$value": "#FFFFFF", "$type": "color", "$description": "Dropdown/popover background" },
+        "shimmer": { "$value": "rgba(0, 0, 0, 0.015)", "$type": "color", "$description": "Subtle interactive surface tint" },
+        "input": { "$value": "rgba(0, 0, 0, 0.02)", "$type": "color", "$description": "Input field background" }
+      },
+      "border": {
+        "default": { "$value": "rgba(0, 0, 0, 0.06)", "$type": "color", "$description": "Standard borders" },
+        "hover": { "$value": "rgba(0, 0, 0, 0.10)", "$type": "color", "$description": "Hovered border" },
+        "sidebar": { "$value": "rgba(0, 0, 0, 0.06)", "$type": "color", "$description": "Sidebar border" },
+        "input": { "$value": "rgba(0, 0, 0, 0.09)", "$type": "color", "$description": "Input border" },
+        "focus": { "$value": "rgba(11, 166, 127, 0.45)", "$type": "color", "$description": "Focused input border" },
+        "focus-ring": { "$value": "rgba(11, 166, 127, 0.06)", "$type": "color", "$description": "Outer focus ring" },
+        "divider": { "$value": "rgba(0, 0, 0, 0.05)", "$type": "color", "$description": "Dashed divider lines" }
+      },
+      "text": {
+        "primary": { "$value": "#111318", "$type": "color", "$description": "Primary text" },
+        "secondary": { "$value": "#5F6270", "$type": "color", "$description": "Secondary text" },
+        "muted": { "$value": "#9295A0", "$type": "color", "$description": "Muted text — labels, captions" }
+      },
+      "accent": {
+        "default": { "$value": "#0BA67F", "$type": "color", "$description": "Primary accent — darker in light mode" },
+        "hover": { "$value": "#09876A", "$type": "color", "$description": "Accent hover" },
+        "foreground": { "$value": "#FFFFFF", "$type": "color", "$description": "Text on accent backgrounds" },
+        "muted": { "$value": "rgba(11, 166, 127, 0.08)", "$type": "color", "$description": "Accent tint" },
+        "glow": { "$value": "rgba(11, 166, 127, 0.04)", "$type": "color", "$description": "Ambient radial glow" }
+      },
+      "accent-secondary": {
+        "default": { "$value": "#7C3AED", "$type": "color", "$description": "Secondary accent — violet" },
+        "muted": { "$value": "rgba(124, 58, 237, 0.07)", "$type": "color", "$description": "Secondary accent tint" }
+      },
+      "semantic": {
+        "danger": { "$value": "#E04545", "$type": "color", "$description": "Error, destructive, negative" },
+        "danger-muted": { "$value": "rgba(224, 69, 69, 0.06)", "$type": "color", "$description": "Danger tint" },
+        "warning": { "$value": "#D99A0B", "$type": "color", "$description": "Warning, alerts" },
+        "warning-muted": { "$value": "rgba(217, 154, 11, 0.06)", "$type": "color", "$description": "Warning tint" }
+      },
+      "interactive": {
+        "nav-active": { "$value": "rgba(11, 166, 127, 0.08)", "$type": "color", "$description": "Active nav bg" },
+        "nav-hover": { "$value": "rgba(0, 0, 0, 0.03)", "$type": "color", "$description": "Hovered nav bg" },
+        "dropdown-hover": { "$value": "rgba(0, 0, 0, 0.03)", "$type": "color", "$description": "Hovered dropdown option" },
+        "row-hover": { "$value": "rgba(0, 0, 0, 0.015)", "$type": "color", "$description": "Table row hover" },
+        "badge": { "$value": "rgba(11, 166, 127, 0.08)", "$type": "color", "$description": "Badge background" },
+        "avatar-ring": { "$value": "rgba(11, 166, 127, 0.35)", "$type": "color", "$description": "Avatar outer ring" },
+        "slider-track": { "$value": "rgba(0, 0, 0, 0.07)", "$type": "color", "$description": "Slider track" },
+        "slider-thumb": { "$value": "#0BA67F", "$type": "color", "$description": "Slider thumb" },
+        "slider-thumb-border": { "$value": "#FFFFFF", "$type": "color", "$description": "Slider thumb border" }
+      },
+      "chart": {
+        "series-1": { "$value": "#0BA67F", "$type": "color", "$description": "Revenue" },
+        "series-2": { "$value": "#7C3AED", "$type": "color", "$description": "Forecast, Users" },
+        "series-3": { "$value": "#D99A0B", "$type": "color", "$description": "Pipeline" },
+        "series-4": { "$value": "#E04545", "$type": "color", "$description": "Bounce, Danger" },
+        "series-5": { "$value": "#2563EB", "$type": "color", "$description": "Info" },
+        "series-6": { "$value": "#0891B2", "$type": "color", "$description": "Additional" }
+      }
+    },
+    "shadow": {
+      "card": {
+        "$value": [
+          { "color": "rgba(0, 0, 0, 0.04)", "offsetX": 0, "offsetY": 1, "blur": 2, "spread": 0, "type": "dropShadow" },
+          { "color": "rgba(0, 0, 0, 0.05)", "offsetX": 0, "offsetY": 4, "blur": 16, "spread": 0, "type": "dropShadow" },
+          { "color": "rgba(255, 255, 255, 0.8)", "offsetX": 0, "offsetY": 1, "blur": 0, "spread": 0, "type": "innerShadow" }
+        ],
+        "$type": "shadow", "$description": "Card elevation with bright inset highlight"
+      },
+      "button": {
+        "$value": [
+          { "color": "rgba(11, 166, 127, 0.12)", "offsetX": 0, "offsetY": 1, "blur": 3, "spread": 0, "type": "dropShadow" }
+        ],
+        "$type": "shadow", "$description": "Primary button accent-tinted shadow"
+      },
+      "dropdown": {
+        "$value": [
+          { "color": "rgba(0, 0, 0, 0.1)", "offsetX": 0, "offsetY": 8, "blur": 30, "spread": 0, "type": "dropShadow" },
+          { "color": "rgba(0, 0, 0, 0.06)", "offsetX": 0, "offsetY": 0, "blur": 0, "spread": 1, "type": "dropShadow" }
+        ],
+        "$type": "shadow", "$description": "Dropdown/popover elevation"
+      }
+    }
+  },
+  "$themes": [
+    {
+      "name": "Dark",
+      "group": "Mode",
+      "selectedTokenSets": {
+        "Global": "enabled",
+        "Mode/Dark": "enabled",
+        "Mode/Light": "disabled"
+      }
+    },
+    {
+      "name": "Light",
+      "group": "Mode",
+      "selectedTokenSets": {
+        "Global": "enabled",
+        "Mode/Dark": "disabled",
+        "Mode/Light": "enabled"
+      }
+    }
+  ],
+  "$metadata": {
+    "tokenSetOrder": ["Global", "Mode/Dark", "Mode/Light"]
+  }
+}
