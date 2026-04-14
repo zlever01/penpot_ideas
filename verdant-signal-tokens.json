@@ -297,3 +297,110 @@
     "tokenSetOrder": ["Global", "Mode/Dark", "Mode/Light"]
   }
 }
+
+
+:root {
+/* Surfaces */
+--background: #F6F7F9;
+--sidebar: #FFFFFF;
+--card: #FFFFFF;
+--border: rgba(0,0,0,0.06);
+--border-hover: rgba(0,0,0,0.10);
+--divider: rgba(0,0,0,0.05);
+--shimmer: rgba(0,0,0,0.015);
+
+/* Text */
+--foreground: #111318;
+--muted-foreground: #5F6270;
+--muted: #9295A0;
+
+/* Accent */
+--accent: #0BA67F;
+--accent-hover: #09876A;
+--accent-foreground: #FFFFFF;
+--accent-muted: rgba(11,166,127,0.08);
+
+/* Secondary accent */
+--accent-secondary: #7C3AED;
+--accent-secondary-muted: rgba(124,58,237,0.07);
+
+/* Semantic */
+--danger: #E04545;
+--danger-muted: rgba(224,69,69,0.06);
+--warning: #D99A0B;
+--warning-muted: rgba(217,154,11,0.06);
+
+/* Inputs */
+--input-bg: rgba(0,0,0,0.02);
+--input-border: rgba(0,0,0,0.09);
+--focus-border: rgba(11,166,127,0.45);
+--focus-ring: rgba(11,166,127,0.06);
+
+/* Elevation */
+--card-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.8);
+--btn-shadow: 0 1px 3px rgba(11,166,127,0.12);
+--dropdown-shadow: 0 8px 30px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.06);
+
+/* Radius */
+--radius-card: 14px;
+--radius-btn: 10px;
+--radius-input: 9px;
+--radius-pill: 20px;
+
+/* Ambient */
+--glow-color: rgba(11,166,127,0.04);
+--noise-opacity: 0.015;
+}
+
+:dark {
+/* Surfaces */
+--background: #07080A;
+--sidebar: #0B0D10;
+--card: #12151A;
+--border: rgba(255,255,255,0.06);
+--border-hover: rgba(255,255,255,0.10);
+--divider: rgba(255,255,255,0.04);
+--shimmer: rgba(255,255,255,0.03);
+
+/* Text */
+--foreground: #F4F4F5;
+--muted-foreground: #8B8D98;
+--muted: #45474F;
+
+/* Accent */
+--accent: #0ECDA4;
+--accent-hover: #3DDFBB;
+--accent-foreground: #021F18;
+--accent-muted: rgba(14,205,164,0.10);
+
+/* Secondary accent */
+--accent-secondary: #8B5CF6;
+--accent-secondary-muted: rgba(139,92,246,0.10);
+
+/* Semantic */
+--danger: #F06060;
+--danger-muted: rgba(240,96,96,0.08);
+--warning: #F5B731;
+--warning-muted: rgba(245,183,49,0.08);
+
+/* Inputs */
+--input-bg: rgba(255,255,255,0.04);
+--input-border: rgba(255,255,255,0.07);
+--focus-border: rgba(14,205,164,0.4);
+--focus-ring: rgba(14,205,164,0.08);
+
+/* Elevation */
+--card-shadow: 0 1px 3px rgba(0,0,0,0.4), 0 8px 24px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.03);
+--btn-shadow: 0 1px 3px rgba(14,205,164,0.15);
+--dropdown-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06);
+
+/* Radius */
+--radius-card: 14px;
+--radius-btn: 10px;
+--radius-input: 9px;
+--radius-pill: 20px;
+
+/* Ambient */
+--glow-color: rgba(14,205,164,0.05);
+--noise-opacity: 0.025;
+}
