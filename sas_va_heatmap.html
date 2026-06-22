@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAS VA Status Heatmap</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f6f8;
+      color: #2c3345;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    #chart-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      color: #2c3345;
+      padding: 10px 16px 4px;
+      flex-shrink: 0;
+    }
+
+    #legend {
+      display: flex;
+      gap: 18px;
+      padding: 4px 16px 8px;
+      flex-shrink: 0;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #4a5068;
+    }
+
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    #chart-container {
+      flex: 1;
+      overflow: hidden;
+      padding: 0 16px 10px;
+    }
+
+    #chart-container svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Cells */
+    .cell {
+      rx: 3;
+      ry: 3;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .cell:hover {
+      opacity: 0.82;
+      stroke: #2c3345;
+      stroke-width: 1.5px;
+    }
+
+    .cell-label {
+      font-size: 10px;
+      font-weight: 500;
+      fill: #fff;
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none;
+    }
+
+    /* Tooltip */
+    #tooltip {
+      position: fixed;
+      background: #2c3345;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.6;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s;
+      z-index: 999;
+      max-width: 220px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    #tooltip.visible {
+      opacity: 1;
+    }
+
+    #tooltip strong {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 2px;
+    }
+
+    /* Axis */
+    .axis text {
+      font-size: 11px;
+      fill: #4a5068;
+    }
+
+    .axis line,
+    .axis path {
+      stroke: #d0d4de;
+    }
+
+    .x-axis text {
+      font-size: 10px;
+    }
+
+    /* No-data message */
+    #no-data {
+      display: none;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #8a90a2;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="chart-title">Object Status by Day</div>
+
+  <div id="legend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#2ecc71;"></div>
+      <span>OK</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#f39c12;"></div>
+      <span>Warning</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#e74c3c;"></div>
+      <span>Critical</span>
+    </div>
+  </div>
+
+  <div id="chart-container">
+    <svg id="heatmap"></svg>
+    <div id="no-data">No data available.</div>
+  </div>
+
+  <div id="tooltip"></div>
+
+  <script>
+    // ─── CONFIG ──────────────────────────────────────────────────────────────────
+    // Status labels must match exactly what SAS VA sends.
+    // Customise STATUS_COLORS to match your brand palette.
+    const STATUS_COLORS = {
+      "OK":       "#2ecc71",
+      "Warning":  "#f39c12",
+      "Critical": "#e74c3c",
+      "Unknown":  "#b0b7c6"   // fallback for unrecognised values
+    };
+
+    // Column roles expected from SAS VA (case-insensitive matching below)
+    // SAS VA DDC passes data as: { resultName, rowCount, columns: [{label, type, data}] }
+    // Expected columns: "Category" (string), "Day" (string/date), "Status" (string)
+
+    // ─── SAMPLE DATA (used when not embedded in SAS VA) ──────────────────────
+    function generateSampleData() {
+      const objects = Array.from({ length: 17 }, (_, i) => `Object ${String(i + 1).padStart(2, "0")}`);
+      const days = [];
+      const base = new Date(2025, 0, 1);
+      for (let i = 0; i < 14; i++) {
+        const d = new Date(base);
+        d.setDate(base.getDate() + i);
+        days.push(d.toLocaleDateString("en-US", { month: "short", day: "numeric" }));
+      }
+      const statuses = ["OK", "Warning", "Critical"];
+      const rows = [];
+      objects.forEach(obj => {
+        days.forEach(day => {
+          rows.push({
+            category: obj,
+            day:      day,
+            status:   statuses[Math.floor(Math.random() * statuses.length)]
+          });
+        });
+      });
+      return rows;
+    }
+
+    // ─── SAS VA MESSAGE HANDLER ───────────────────────────────────────────────
+    function parseVAMessage(message) {
+      if (!message || !message.data || !message.data.columns) return null;
+      const cols = message.data.columns;
+
+      // Find columns by label (case-insensitive)
+      const find = label => cols.find(c => c.label.toLowerCase() === label.toLowerCase());
+      const catCol    = find("Category") || cols[0];
+      const dayCol    = find("Day")      || cols[1];
+      const statusCol = find("Status")   || cols[2];
+
+      if (!catCol || !dayCol || !statusCol) return null;
+
+      const rows = [];
+      for (let i = 0; i < message.data.rowCount; i++) {
+        rows.push({
+          category: String(catCol.data[i]),
+          day:      String(dayCol.data[i]),
+          status:   String(statusCol.data[i])
+        });
+      }
+      return rows;
+    }
+
+    // ─── RENDER ───────────────────────────────────────────────────────────────
+    function render(rows) {
+      const svg = d3.select("#heatmap");
+      svg.selectAll("*").remove();
+
+      if (!rows || rows.length === 0) {
+        document.getElementById("no-data").style.display = "flex";
+        return;
+      }
+      document.getElementById("no-data").style.display = "none";
+
+      const container = document.getElementById("chart-container");
+      const W = container.clientWidth;
+      const H = container.clientHeight;
+
+      const margin = { top: 10, right: 20, bottom: 50, left: 110 };
+      const width  = W - margin.left - margin.right;
+      const height = H - margin.top  - margin.bottom;
+
+      const g = svg
+        .attr("viewBox", `0 0 ${W} ${H}`)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+      // Unique ordered axes
+      const categories = [...new Set(rows.map(d => d.category))];
+      const days       = [...new Set(rows.map(d => d.day))];
+
+      const xScale = d3.scaleBand().domain(days).range([0, width]).padding(0.06);
+      const yScale = d3.scaleBand().domain(categories).range([0, height]).padding(0.06);
+
+      const cellW = xScale.bandwidth();
+      const cellH = yScale.bandwidth();
+
+      // Axes
+      g.append("g")
+        .attr("class", "axis x-axis")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(xScale).tickSize(0))
+        .call(ax => ax.select(".domain").remove())
+        .selectAll("text")
+          .attr("dy", "1.2em")
+          .style("text-anchor", "middle");
+
+      g.append("g")
+        .attr("class", "axis y-axis")
+        .call(d3.axisLeft(yScale).tickSize(0))
+        .call(ax => ax.select(".domain").remove())
+        .selectAll("text")
+          .attr("dx", "-0.5em");
+
+      // Cells
+      const tooltip = document.getElementById("tooltip");
+
+      g.selectAll(".cell")
+        .data(rows)
+        .join("rect")
+          .attr("class", "cell")
+          .attr("x",      d => xScale(d.day))
+          .attr("y",      d => yScale(d.category))
+          .attr("width",  cellW)
+          .attr("height", cellH)
+          .attr("rx", 3).attr("ry", 3)
+          .attr("fill", d => STATUS_COLORS[d.status] || STATUS_COLORS["Unknown"])
+          .on("mousemove", (event, d) => {
+            tooltip.innerHTML = `<strong>${d.category}</strong>${d.day}<br>Status: <b>${d.status}</b>`;
+            tooltip.classList.add("visible");
+            const offset = 14;
+            let tx = event.clientX + offset;
+            let ty = event.clientY - 36;
+            if (tx + 220 > window.innerWidth)  tx = event.clientX - 230;
+            if (ty < 0) ty = event.clientY + offset;
+            tooltip.style.left = tx + "px";
+            tooltip.style.top  = ty + "px";
+          })
+          .on("mouseleave", () => tooltip.classList.remove("visible"));
+
+      // Cell labels (status text) — only show if cell is tall enough
+      if (cellH > 14) {
+        g.selectAll(".cell-label")
+          .data(rows)
+          .join("text")
+            .attr("class", "cell-label")
+            .attr("x", d => xScale(d.day)      + cellW / 2)
+            .attr("y", d => yScale(d.category) + cellH / 2)
+            .style("font-size", Math.min(11, cellH * 0.42) + "px")
+            .text(d => d.status);
+      }
+    }
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    let currentRows = generateSampleData();
+    render(currentRows);
+
+    // Resize support
+    const resizeObserver = new ResizeObserver(() => render(currentRows));
+    resizeObserver.observe(document.getElementById("chart-container"));
+
+    // SAS VA DDC listener
+    if (window.addEventListener) {
+      window.addEventListener("message", function (evt) {
+        // Accept messages from any origin when hosted in SAS VA
+        if (evt.data && evt.data.resultName) {
+          const rows = parseVAMessage(evt);
+          if (rows) {
+            currentRows = rows;
+            render(currentRows);
+          }
+        }
+      });
+    }
+
+    // Tell SAS VA this object is ready
+    if (window.parent !== window) {
+      window.parent.postMessage({ sentinel: "loaded" }, "*");
+    }
+  </script>
+</body>
+</html>
