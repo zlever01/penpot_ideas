@@ -6,11 +6,7 @@
   <title>SAS VA Status Heatmap</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: "Segoe UI", Arial, sans-serif;
@@ -57,6 +53,7 @@
       flex: 1;
       overflow: hidden;
       padding: 0 16px 10px;
+      position: relative;
     }
 
     #chart-container svg {
@@ -64,10 +61,7 @@
       height: 100%;
     }
 
-    /* Cells */
     .cell {
-      rx: 3;
-      ry: 3;
       cursor: pointer;
       transition: opacity 0.15s;
     }
@@ -87,7 +81,6 @@
       pointer-events: none;
     }
 
-    /* Tooltip */
     #tooltip {
       position: fixed;
       background: #2c3345;
@@ -104,9 +97,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
-    #tooltip.visible {
-      opacity: 1;
-    }
+    #tooltip.visible { opacity: 1; }
 
     #tooltip strong {
       display: block;
@@ -114,22 +105,10 @@
       margin-bottom: 2px;
     }
 
-    /* Axis */
-    .axis text {
-      font-size: 11px;
-      fill: #4a5068;
-    }
+    .axis text { font-size: 11px; fill: #4a5068; }
+    .axis line, .axis path { stroke: #d0d4de; }
+    .x-axis text { font-size: 10px; }
 
-    .axis line,
-    .axis path {
-      stroke: #d0d4de;
-    }
-
-    .x-axis text {
-      font-size: 10px;
-    }
-
-    /* No-data message */
     #no-data {
       display: none;
       position: absolute;
@@ -168,21 +147,15 @@
   <div id="tooltip"></div>
 
   <script>
-    // ─── CONFIG ──────────────────────────────────────────────────────────────────
-    // Status labels must match exactly what SAS VA sends.
-    // Customise STATUS_COLORS to match your brand palette.
+    // ─── CONFIG ───────────────────────────────────────────────────────────────
     const STATUS_COLORS = {
       "OK":       "#2ecc71",
       "Warning":  "#f39c12",
       "Critical": "#e74c3c",
-      "Unknown":  "#b0b7c6"   // fallback for unrecognised values
+      "Unknown":  "#b0b7c6"
     };
 
-    // Column roles expected from SAS VA (case-insensitive matching below)
-    // SAS VA DDC passes data as: { resultName, rowCount, columns: [{label, type, data}] }
-    // Expected columns: "Category" (string), "Day" (string/date), "Status" (string)
-
-    // ─── SAMPLE DATA (used when not embedded in SAS VA) ──────────────────────
+    // ─── SAMPLE DATA ──────────────────────────────────────────────────────────
     function generateSampleData() {
       const objects = Array.from({ length: 17 }, (_, i) => `Object ${String(i + 1).padStart(2, "0")}`);
       const days = [];
@@ -206,28 +179,29 @@
       return rows;
     }
 
-    // ─── SAS VA MESSAGE HANDLER ───────────────────────────────────────────────
-    function parseVAMessage(message) {
-      if (!message || !message.data || !message.data.columns) return null;
-      const cols = message.data.columns;
+    // ─── PARSE SAS VA STRUCTURE B ─────────────────────────────────────────────
+    // SAS VA sends: { resultName, data: [ [col0, col1, col2], ... ] }
+    // Column order: 0 = Category, 1 = Day, 2 = Status
+    function parseVAMessage(evt) {
+      const payload = evt.data;
+      if (!payload || !payload.data || !Array.isArray(payload.data)) return null;
 
-      // Find columns by label (case-insensitive)
-      const find = label => cols.find(c => c.label.toLowerCase() === label.toLowerCase());
-      const catCol    = find("Category") || cols[0];
-      const dayCol    = find("Day")      || cols[1];
-      const statusCol = find("Status")   || cols[2];
-
-      if (!catCol || !dayCol || !statusCol) return null;
-
+      const seen = new Set();
       const rows = [];
-      for (let i = 0; i < message.data.rowCount; i++) {
+
+      payload.data.forEach(row => {
+        if (!row || row.length < 3) return;
+        const key = `${row[0]}|${row[1]}|${row[2]}`;
+        if (seen.has(key)) return;
+        seen.add(key);
         rows.push({
-          category: String(catCol.data[i]),
-          day:      String(dayCol.data[i]),
-          status:   String(statusCol.data[i])
+          category: String(row[0]),
+          day:      String(row[1]),
+          status:   String(row[2])
         });
-      }
-      return rows;
+      });
+
+      return rows.length ? rows : null;
     }
 
     // ─── RENDER ───────────────────────────────────────────────────────────────
@@ -254,7 +228,6 @@
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-      // Unique ordered axes
       const categories = [...new Set(rows.map(d => d.category))];
       const days       = [...new Set(rows.map(d => d.day))];
 
@@ -264,7 +237,7 @@
       const cellW = xScale.bandwidth();
       const cellH = yScale.bandwidth();
 
-      // Axes
+      // X Axis
       g.append("g")
         .attr("class", "axis x-axis")
         .attr("transform", `translate(0,${height})`)
@@ -274,6 +247,7 @@
           .attr("dy", "1.2em")
           .style("text-anchor", "middle");
 
+      // Y Axis
       g.append("g")
         .attr("class", "axis y-axis")
         .call(d3.axisLeft(yScale).tickSize(0))
@@ -297,17 +271,16 @@
           .on("mousemove", (event, d) => {
             tooltip.innerHTML = `<strong>${d.category}</strong>${d.day}<br>Status: <b>${d.status}</b>`;
             tooltip.classList.add("visible");
-            const offset = 14;
-            let tx = event.clientX + offset;
+            let tx = event.clientX + 14;
             let ty = event.clientY - 36;
-            if (tx + 220 > window.innerWidth)  tx = event.clientX - 230;
-            if (ty < 0) ty = event.clientY + offset;
+            if (tx + 220 > window.innerWidth) tx = event.clientX - 230;
+            if (ty < 0) ty = event.clientY + 14;
             tooltip.style.left = tx + "px";
             tooltip.style.top  = ty + "px";
           })
           .on("mouseleave", () => tooltip.classList.remove("visible"));
 
-      // Cell labels (status text) — only show if cell is tall enough
+      // Cell labels — only if tall enough
       if (cellH > 14) {
         g.selectAll(".cell-label")
           .data(rows)
@@ -321,28 +294,41 @@
     }
 
     // ─── INIT ─────────────────────────────────────────────────────────────────
-    let currentRows = generateSampleData();
-    render(currentRows);
+    // Track whether SAS VA has sent real data yet
+    let sasDataReceived = false;
+    let currentRows = null;
 
-    // Resize support
-    const resizeObserver = new ResizeObserver(() => render(currentRows));
-    resizeObserver.observe(document.getElementById("chart-container"));
-
-    // SAS VA DDC listener
-    if (window.addEventListener) {
-      window.addEventListener("message", function (evt) {
-        // Accept messages from any origin when hosted in SAS VA
-        if (evt.data && evt.data.resultName) {
-          const rows = parseVAMessage(evt);
-          if (rows) {
-            currentRows = rows;
-            render(currentRows);
-          }
-        }
-      });
+    // Show sample data only when viewed outside SAS VA
+    if (window.parent === window) {
+      currentRows = generateSampleData();
+      render(currentRows);
     }
 
-    // Tell SAS VA this object is ready
+    // ResizeObserver — only re-renders if we already have data
+    // Uses a flag to ignore the resize that fires on SAS VA iframe init
+    let resizeReady = false;
+    setTimeout(() => { resizeReady = true; }, 500);
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (resizeReady && currentRows) {
+        render(currentRows);
+      }
+    });
+    resizeObserver.observe(document.getElementById("chart-container"));
+
+    // SAS VA DDC message listener
+    window.addEventListener("message", function(evt) {
+      if (!evt.data || !evt.data.resultName) return;
+
+      const rows = parseVAMessage(evt);
+      if (rows) {
+        sasDataReceived = true;
+        currentRows = rows;
+        render(currentRows);
+      }
+    });
+
+    // Signal readiness to SAS VA
     if (window.parent !== window) {
       window.parent.postMessage({ sentinel: "loaded" }, "*");
     }
